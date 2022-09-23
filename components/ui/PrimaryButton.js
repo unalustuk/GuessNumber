@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, Pressable } from "react-native"
 import React from "react"
 
+import Colors from "../../constants/colors"
+
 export default function PrimaryButton({ children, onPress }) {
     return (
         <View style={styles.buttonOuterContainer}>
@@ -26,7 +28,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     buttonInnerContainer: {
-        backgroundColor: "#72063c",
+        backgroundColor: Colors.primary600,
         paddingVertical: 8,
         paddingHorizontal: 16,
         elevation: 2,
