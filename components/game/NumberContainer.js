@@ -1,10 +1,23 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native"
+import {
+    View,
+    Text,
+    StyleSheet,
+    Dimensions,
+    useWindowDimensions,
+} from "react-native"
 import React from "react"
 import Colors from "../../constants/colors"
 
 export default function NumberContainer({ children }) {
+    const { width, height } = useWindowDimensions()
+
+    const responsiveStyles = height < 380 && {
+        margin: 12,
+        padding: 12,
+        marginBottom: 0,
+    }
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, responsiveStyles]}>
             <Text style={styles.numberText}>{children}</Text>
         </View>
     )

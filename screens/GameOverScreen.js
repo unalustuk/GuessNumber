@@ -1,4 +1,11 @@
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native"
+import {
+    View,
+    Text,
+    Image,
+    StyleSheet,
+    Dimensions,
+    useWindowDimensions,
+} from "react-native"
 import React from "react"
 import Title from "../components/ui/Title"
 import Colors from "../constants/colors"
@@ -9,22 +16,31 @@ export default function GameOverScreen({
     userNumber,
     onStartNewGame,
 }) {
+    const { width, height } = useWindowDimensions()
+
     return (
         <View style={styles.root}>
             <Title>GAME OVER!</Title>
-            <View style={styles.imageContainer}>
-                <Image
-                    source={require("../assets/images/success.png")}
-                    style={styles.image}
-                />
-            </View>
+            {height > 380 && (
+                <View style={styles.imageContainer}>
+                    <Image
+                        source={require("../assets/images/success.png")}
+                        style={styles.image}
+                    />
+                </View>
+            )}
+
             <Text style={styles.summaryText}>
                 Your phone needed{" "}
                 <Text style={styles.highligtText}>{roundsNumber}</Text> rounds
                 to guess the number
                 <Text style={styles.highligtText}> {userNumber}</Text>.
             </Text>
-            <PrimaryButton onPress={onStartNewGame}>Play Again</PrimaryButton>
+            <View style={styles.buttonContainer}>
+                <PrimaryButton onPress={onStartNewGame}>
+                    Play Again
+                </PrimaryButton>
+            </View>
         </View>
     )
 }
@@ -55,8 +71,12 @@ const styles = StyleSheet.create({
         fontFamily: "open-sans",
         fontSize: 20,
         textAlign: "center",
+        marginTop: 24,
+
         marginBottom: 24,
     },
+    buttonContainer: { minWidth: "60%" },
+
     highligtText: {
         fontFamily: "open-sans-bold",
         color: Colors.primary500,

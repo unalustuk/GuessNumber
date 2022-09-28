@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Alert, FlatList } from "react-native"
+import {
+    View,
+    Text,
+    StyleSheet,
+    Alert,
+    FlatList,
+    useWindowDimensions,
+} from "react-native"
 import React, { useState, useEffect } from "react"
 import { FontAwesome } from "@expo/vector-icons"
 import NumberContainer from "../components/game/NumberContainer"
@@ -25,6 +32,7 @@ export default function GameScreen({ chosenNumber, onGameOver }) {
     const initialGuess = generateRandomBetween(1, 100, chosenNumber)
     const [currentGuess, setCurrentGuess] = useState(initialGuess)
     const [guessRounds, setGuessRounds] = useState([initialGuess])
+    const { width, height } = useWindowDimensions()
 
     useEffect(() => {
         if (currentGuess === chosenNumber) {
@@ -58,9 +66,9 @@ export default function GameScreen({ chosenNumber, onGameOver }) {
         setCurrentGuess(newRndNumber)
         setGuessRounds((prevstate) => [newRndNumber, ...prevstate])
     }
-    return (
-        <View style={styles.gameContainer}>
-            <Title>Opponent's Guess</Title>
+
+    let content = (
+        <>
             <NumberContainer>{currentGuess}</NumberContainer>
             <Card>
                 <InstructionText style={styles.text}>
@@ -83,6 +91,37 @@ export default function GameScreen({ chosenNumber, onGameOver }) {
                     </View>
                 </View>
             </Card>
+        </>
+    )
+
+    if (width > 500) {
+        content = (
+            <>
+                <View style={styles.buttonsContainerWide}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton
+                            onPress={nextGuessHandler.bind(this, "lower")}
+                        >
+                            <FontAwesome name="minus" size={24} color="white" />
+                        </PrimaryButton>
+                    </View>
+                    <NumberContainer>{currentGuess}</NumberContainer>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton
+                            onPress={nextGuessHandler.bind(this, "higher")}
+                        >
+                            <FontAwesome name="plus" size={24} color="white " />
+                        </PrimaryButton>
+                    </View>
+                </View>
+            </>
+        )
+    }
+
+    return (
+        <View style={styles.gameContainer}>
+            <Title>Opponent's Guess</Title>
+            {content}
             <View style={styles.listContainer}>
                 <FlatList
                     data={guessRounds}
@@ -109,6 +148,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     buttonContainer: { flex: 1 },
+    buttonsContainerWide: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+
     text: {
         marginBottom: 24,
     },

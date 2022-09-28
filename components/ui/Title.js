@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from "react-native"
+import { Text, StyleSheet, Platform } from "react-native"
 import React from "react"
 
 export default function Title({ children }) {
@@ -6,16 +6,13 @@ export default function Title({ children }) {
 }
 
 const styles = StyleSheet.create({
-    gameContainer: {
-        flex: 1,
-        padding: 24,
-    },
     title: {
         fontFamily: "open-sans-bold",
         color: "white",
         fontSize: 24,
         textAlign: "center",
-        borderWidth: 2,
+        // borderWidth: Platform.OS === "android" ? 2 : 0,
+        borderWidth: Platform.select({ ios: 0, android: 2 }),
         borderColor: "white",
         padding: 12,
         maxWidth: "80%",
